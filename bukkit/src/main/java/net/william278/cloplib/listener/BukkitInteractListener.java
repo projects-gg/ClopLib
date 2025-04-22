@@ -28,6 +28,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.type.*;
+import org.bukkit.block.data.type.Comparator;
+import org.bukkit.block.data.type.Door;
+import org.bukkit.block.data.type.Gate;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
@@ -40,6 +43,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
@@ -235,11 +239,17 @@ public interface BukkitInteractListener extends BukkitListener {
         if (block.getState() instanceof InventoryHolder) {
             return InteractBehaviour.CONTAINER_OPENS;
         }
+        if (block.getState() instanceof PressureSensor || block.getState() instanceof PressurePlate) {
+            return InteractBehaviour.PRESSURE_PLATE;
+        }
         if (block.getBlockData() instanceof Switch) {
             return InteractBehaviour.REDSTONE_SWITCHED;
         }
         if (block.getBlockData() instanceof Comparator) {
             return InteractBehaviour.COMPARATOR;
+        }
+        if (block.getBlockData() instanceof Repeater) {
+            return InteractBehaviour.REPEATER;
         }
         if (block.getState() instanceof Sign) {
             return InteractBehaviour.EDIT_SIGN;
@@ -284,6 +294,7 @@ public interface BukkitInteractListener extends BukkitListener {
         CONTAINER_OPENS,
         REDSTONE_SWITCHED,
         COMPARATOR,
+        REPEATER,
         DOOR_SWITCHED,
         ANVIL_USE,
         BEE_NEST_USE,
@@ -294,6 +305,7 @@ public interface BukkitInteractListener extends BukkitListener {
         ANCHOR_USE,
         TRAPDOOR_USE,
         GATE_USE,
+        PRESSURE_PLATE,
         STANDARD
     }
 
