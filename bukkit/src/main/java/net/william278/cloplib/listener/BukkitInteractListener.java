@@ -27,7 +27,7 @@ import org.bukkit.FluidCollisionMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.block.data.type.Switch;
+import org.bukkit.block.data.type.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
@@ -67,10 +67,15 @@ public interface BukkitInteractListener extends BukkitListener {
 
                 // Check against containers, switches and other block interactions
                 final Block block = e.getClickedBlock();
-                if (block != null && e.useInteractedBlock() != Event.Result.DENY) {
+                if (block == null) return;
+
+                InteractBehaviour behaviour = getInteractBehaviour(block);
+                if (behaviour == InteractBehaviour.STANDARD) return;
+
+                if (e.useInteractedBlock() != Event.Result.DENY) {
                     if (getHandler().cancelOperation(Operation.of(
                             getUser(e.getPlayer()),
-                            switch (getInteractBehaviour(block)) {
+                            switch (behaviour) {
                                 case EDIT_SIGN -> OperationType.BLOCK_PLACE;
                                 case REDSTONE_SWITCHED -> OperationType.REDSTONE_INTERACT;
                                 case FARM_BLOCK -> OperationType.FARM_BLOCK_INTERACT;
@@ -233,8 +238,41 @@ public interface BukkitInteractListener extends BukkitListener {
         if (block.getBlockData() instanceof Switch) {
             return InteractBehaviour.REDSTONE_SWITCHED;
         }
+        if (block.getBlockData() instanceof Comparator) {
+            return InteractBehaviour.COMPARATOR;
+        }
         if (block.getState() instanceof Sign) {
             return InteractBehaviour.EDIT_SIGN;
+        }
+        if (block.getBlockData() instanceof Door) {
+            return InteractBehaviour.DOOR_SWITCHED;
+        }
+        if (block.getType().name().endsWith("ANVIL")) {
+            return InteractBehaviour.ANVIL_USE;
+        }
+        if (block.getType() == Material.BEE_NEST) {
+            return InteractBehaviour.BEE_NEST_USE;
+        }
+        if (block.getType() == Material.BEEHIVE) {
+            return InteractBehaviour.BEE_HIVE_USE;
+        }
+        if (block.getType() == Material.BEACON) {
+            return InteractBehaviour.BEACON_USE;
+        }
+        if (block.getType().name().endsWith("CAULDRON")) {
+            return InteractBehaviour.CAULDRON_USE;
+        }
+        if (block.getType() == Material.PUMPKIN) {
+            return InteractBehaviour.PUMPKIN_USE;
+        }
+        if (block.getType() == Material.RESPAWN_ANCHOR) {
+            return InteractBehaviour.ANCHOR_USE;
+        }
+        if (block.getType().name().endsWith("TRAPDOOR")) {
+            return InteractBehaviour.TRAPDOOR_USE;
+        }
+        if (block.getBlockData() instanceof Gate) {
+            return InteractBehaviour.GATE_USE;
         }
         return InteractBehaviour.STANDARD;
     }
@@ -245,6 +283,17 @@ public interface BukkitInteractListener extends BukkitListener {
         FARM_BLOCK,
         CONTAINER_OPENS,
         REDSTONE_SWITCHED,
+        COMPARATOR,
+        DOOR_SWITCHED,
+        ANVIL_USE,
+        BEE_NEST_USE,
+        BEE_HIVE_USE,
+        BEACON_USE,
+        CAULDRON_USE,
+        PUMPKIN_USE,
+        ANCHOR_USE,
+        TRAPDOOR_USE,
+        GATE_USE,
         STANDARD
     }
 
