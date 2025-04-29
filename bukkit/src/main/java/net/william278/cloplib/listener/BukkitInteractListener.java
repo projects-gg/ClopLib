@@ -104,6 +104,7 @@ public interface BukkitInteractListener extends BukkitListener {
 
                 final Block block = e.getClickedBlock();
                 if (block == null || block.getType() == Material.AIR) return;
+                if (getChecker().isPressureSensitiveMaterial(block.getType().getKey().toString())) return;
 
                 if (getChecker().isPressureSensitiveMaterial(block.getType().getKey().toString())) {
                     if (!isPlayerNpc(e.getPlayer()) && getHandler().cancelOperation(Operation.of(
