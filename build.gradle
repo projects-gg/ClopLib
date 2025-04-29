@@ -11,7 +11,7 @@ plugins {
 }
 
 group 'net.william278'
-version "$ext.library_version${versionMetadata()}"
+version "$ext.library_version"
 description "$ext.library_description"
 defaultTasks 'licenseFormat', 'build'
 
