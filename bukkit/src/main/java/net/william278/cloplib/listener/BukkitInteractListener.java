@@ -104,9 +104,11 @@ public interface BukkitInteractListener extends BukkitListener {
 
                 final Block block = e.getClickedBlock();
                 if (block == null || block.getType() == Material.AIR) return;
-                if (getChecker().isPressureSensitiveMaterial(block.getType().getKey().toString())) return;
-
                 if (getChecker().isPressureSensitiveMaterial(block.getType().getKey().toString())) {
+                    return;
+                }
+
+                /*if (getChecker().isPressureSensitiveMaterial(block.getType().getKey().toString())) {
                     if (!isPlayerNpc(e.getPlayer()) && getHandler().cancelOperation(Operation.of(
                             getUser(e.getPlayer()),
                             OperationType.REDSTONE_INTERACT,
@@ -116,7 +118,7 @@ public interface BukkitInteractListener extends BukkitListener {
                         e.setUseInteractedBlock(Event.Result.DENY);
                     }
                     return;
-                }
+                }*/
 
                 if (!isPlayerNpc(e.getPlayer()) && getHandler().cancelOperation(Operation.of(
                         getUser(e.getPlayer()),
@@ -240,7 +242,6 @@ public interface BukkitInteractListener extends BukkitListener {
             return InteractBehaviour.CONTAINER_OPENS;
         }
         if (block.getType().name().endsWith("PRESSURE_PLATE")) {
-            Bukkit.broadcastMessage("pressure plate behaviour");
             return InteractBehaviour.PRESSURE_PLATE;
         }
         if (block.getBlockData() instanceof Switch) {

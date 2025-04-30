@@ -91,6 +91,10 @@ public interface BukkitEntityListener extends BukkitListener {
         final OperationPosition position = getPosition(e.getBlock().getLocation());
         final Optional<OperationUser> user = getPlayerSource(e.getEntity()).map(this::getUser);
 
+        if (user.isPresent() && getChecker().isPressureSensitiveMaterial(e.getBlock().getType().getKey().toString())) {
+            return;
+        }
+
         // Handle projectiles breaking blocks (chorus fruit, decorated pots)
         if (user.isPresent()) {
             if (getHandler().cancelOperation(Operation.of(
