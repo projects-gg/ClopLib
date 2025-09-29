@@ -51,7 +51,7 @@ public interface BukkitListener extends Listener, InspectorCallbackProvider {
         if (e == null) {
             return Optional.empty();
         }
-        if (e instanceof Player player && !isPlayerNpc(player)) {
+        if (e instanceof Player player) {
             return Optional.of(player);
         }
         if (e instanceof Projectile projectile && projectile.getShooter() instanceof Player player) {

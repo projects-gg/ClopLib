@@ -214,7 +214,7 @@ public interface BukkitEntityDamageListener extends BukkitListener {
     @NotNull
     private OperationType getPlayerDamageType(@NotNull Entity entity) {
         OperationType type = OperationType.PLAYER_DAMAGE_ENTITY;
-        if (entity instanceof Monster || entity instanceof Phantom) {
+        if (entity instanceof Monster || entity instanceof Phantom || entity instanceof MagmaCube) {
             type = OperationType.PLAYER_DAMAGE_MONSTER;
         } else if (entity instanceof Vehicle vehicle && !(entity instanceof Mob)) {
             type = vehicle instanceof InventoryHolder ? OperationType.BLOCK_BREAK : OperationType.BREAK_VEHICLE;
