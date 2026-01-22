@@ -139,6 +139,10 @@ public interface BukkitEntityDamageListener extends BukkitListener {
 
     private <E extends Event & Cancellable> void handlePlayerDamager(@NotNull Player damager, @NotNull Entity entity,
                                                                      @NotNull E e) {
+        if (entity.getType() == EntityType.BAT) {
+            return;
+        }
+
         final Optional<Player> damaged = getPlayerSource(entity);
         if (damaged.isPresent()) {
             if (getHandler().cancelOperation(Operation.of(

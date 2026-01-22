@@ -265,6 +265,9 @@ public interface BukkitInteractListener extends BukkitListener {
         if (block.getType() == Material.BEE_NEST) {
             return InteractBehaviour.BEE_NEST_USE;
         }
+        if (block.getType() == Material.NOTE_BLOCK) {
+            return InteractBehaviour.NOTE_BLOCK;
+        }
         if (block.getType() == Material.BEEHIVE) {
             return InteractBehaviour.BEE_HIVE_USE;
         }
@@ -312,6 +315,7 @@ public interface BukkitInteractListener extends BukkitListener {
         TRAPDOOR_USE,
         GATE_USE,
         PRESSURE_PLATE,
+        NOTE_BLOCK,
         STANDARD
     }
 
